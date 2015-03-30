@@ -6,3 +6,4 @@ Features added to far:
 * Preference (location, units)
 * Having multiple screen (activity)
 * Share
+* Database testing using AndroidTestCase
