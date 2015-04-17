@@ -1,4 +1,4 @@
-package com.example.kra.sunshine.data;
+package com.example.kra.sunshine.utils;
 
 import android.test.suitebuilder.TestSuiteBuilder;
 import junit.framework.Test;
