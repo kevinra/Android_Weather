@@ -7,5 +7,6 @@ Features added to far:
 * Having multiple screen (activity)
 * Share
 * Database testing using AndroidTestCase
+* Content Provider
 * Cursor Loader
 * Updated UI
