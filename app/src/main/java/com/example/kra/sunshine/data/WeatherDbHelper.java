@@ -4,8 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.kra.sunshine.data.WeatherContract.LocationEntry;
-import com.example.kra.sunshine.data.WeatherContract.WeatherEntry;
+import com.example.kra.sunshine.data.WeatherContract.*;
 
 /**
  * Manages a local database for weather data.

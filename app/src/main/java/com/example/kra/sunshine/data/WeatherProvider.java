@@ -123,14 +123,15 @@ public class WeatherProvider extends ContentProvider {
   }
 
   @Override
-  public boolean onCreate() {
+  public boolean onCreate()
+  {
     mOpenHelper = new WeatherDbHelper(getContext());
     return true;
   }
 
   @Override
-  public String getType(Uri uri) {
-
+  public String getType(Uri uri)
+  {
     // Use the Uri Matcher to determine what kind of URI this is.
     final int match = sUriMatcher.match(uri);
     switch (match)
