@@ -87,7 +87,7 @@ public class ForecastAdapter extends CursorAdapter
   public void bindView(View view, Context context, Cursor cursor)
   {
     ViewHolder vh = (ViewHolder) view.getTag();
-
+    int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID);
     long dateInMillis = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
     String weatherDesc = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
     double high = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
@@ -96,8 +96,16 @@ public class ForecastAdapter extends CursorAdapter
     // Read user preference for metric or imperial temperature units
     boolean isMetric = Utility.isMetric(context);
 
-    // Use placeholder image for now
-    vh.iconView.setImageResource(R.drawable.ic_launcher);
+    if (getItemViewType(cursor.getPosition()) == VIEW_TYPE_TODAY)
+    {
+      vh.iconView.setImageResource(Utility
+              .getArtResourceForWeatherCondition(weatherId));
+    }
+    else
+    {
+      vh.iconView.setImageResource(Utility
+              .getIconResourceForWeatherCondition(weatherId));
+    }
     vh.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
     vh.weatherDescView.setText(weatherDesc);
     vh.highTempView.setText(Utility

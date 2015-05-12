@@ -170,7 +170,8 @@ public class DetailFragment
       String highTempStr = Utility.formatTemperature(context, high, isMetric);
       String lowTempStr = Utility.formatTemperature(context, low, isMetric);
 
-      mIconView.setImageResource(R.drawable.ic_launcher);
+      mIconView.setImageResource(Utility
+              .getArtResourceForWeatherCondition(weatherId));
       mFriendlyDateView.setText(friendlyDateText);
       mDateView.setText(dateText);
       mDescriptionView.setText(weatherDesc);
