@@ -3,6 +3,7 @@ package com.example.kra.sunshine;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -30,8 +31,7 @@ public class DetailFragment
   private static final String LOG_TAG = DetailFragment.class.getSimpleName();
   private static final String FORECAST_SHARE_HASHTAG = " #SunshineApp";
   private static final int LOADER_ID_DETAIL = 0;
-  private ShareActionProvider mSAP;
-  private String mForecastStr;
+  public static final String DETAIL_URI_KEY = "URI";
 
   private static final String[] DETAIL_COLUMNS =
           {
@@ -73,6 +73,10 @@ public class DetailFragment
   private TextView mWindView;
   private TextView mPressureView;
 
+  private ShareActionProvider mSAP;
+  private String mForecastStr;
+  private Uri mUri;
+
   public DetailFragment()
   {
     setHasOptionsMenu(true);
@@ -82,6 +86,12 @@ public class DetailFragment
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState)
   {
+    Bundle args = getArguments();
+    if (args != null)
+    {
+      mUri = args.getParcelable(DETAIL_URI_KEY);
+    }
+
     View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
     mIconView = (ImageView) rootView.findViewById(R.id.detail_icon);
     mDateView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -130,22 +140,30 @@ public class DetailFragment
     super.onActivityCreated(savedInstanceState);
   }
 
+  void onLocationChanged(String newLocation)
+  {
+    // Replace the URI, since the location is changed
+    if (mUri != null)
+    {
+      long date = WeatherContract.WeatherEntry.getDateFromUri(mUri);
+      mUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+      getLoaderManager().restartLoader(LOADER_ID_DETAIL, null, this);
+    }
+  }
+
   // LoaderCallbacks Implementation
   @Override
   public Loader<Cursor> onCreateLoader(int id, Bundle args)
   {
-    Intent intent = getActivity().getIntent();
-    if (intent == null)
+    if (mUri != null)
     {
-      return null;
+      // Now create and return a CursorLoader that will take care of
+      // creating a Cursor for the data being displayed
+      return new CursorLoader(getActivity(), mUri,
+                              DETAIL_COLUMNS,
+                              null, null, null);
     }
-
-    // Now create and return a CursorLoader that will take care of
-    // creating a Cursor for the data being displayed
-    return new CursorLoader(getActivity(),
-                            intent.getData(),
-                            DETAIL_COLUMNS,
-                            null, null, null);
+    return null;
   }
 
   @Override

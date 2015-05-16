@@ -27,7 +27,6 @@ public class ForecastFragment
         extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>
 {
-
   private static final int LOADER_ID_FORECAST = 0;
   private static final String[] FORECAST_COLUMNS =
   {
@@ -61,6 +60,13 @@ public class ForecastFragment
   static final int COL_COORD_LONG = 8;
 
   private ForecastAdapter mForecastAdapter;
+
+  public interface Callback
+  {
+    // DetailFragment callback for when an item has been selected.
+    public void fragCallback_onItemSelected(Uri dateUri);
+  }
+
   public ForecastFragment() {}
 
   @Override
@@ -121,10 +127,9 @@ public class ForecastFragment
         if (c != null)
         {
           String locationSetting = Utility.getPreferredLocation(getActivity());
-          Intent intent_detail = new Intent(getActivity(), DetailActivity.class)
-                                      .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-                                      locationSetting, c.getLong(COL_WEATHER_DATE)));
-          startActivity(intent_detail);
+          ((Callback) getActivity()).fragCallback_onItemSelected(
+                  WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
+                          locationSetting, c.getLong(COL_WEATHER_DATE)));
         }
       }
     });

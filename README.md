@@ -10,3 +10,4 @@ Features added to far:
 * Content Provider
 * Cursor Loader
 * Updated UI
+* Multi-pane support on bigger screen
