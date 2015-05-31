@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import android.widget.AdapterView;
-import android.content.Intent;
 import android.util.Log;
 
 import com.example.kra.sunshine.data.WeatherContract;
@@ -60,6 +59,10 @@ public class ForecastFragment
   static final int COL_COORD_LONG = 8;
 
   private ForecastAdapter mForecastAdapter;
+  private ListView mListView;
+  private int mPosition = ListView.INVALID_POSITION;
+  private static final String SELECTED_POSITION_KEY = "POSITION";
+  private boolean mShouldUseTodayLayout;
 
   public interface Callback
   {
@@ -110,15 +113,15 @@ public class ForecastFragment
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState)
+                           final Bundle savedInstanceState)
   {
     mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
     View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-    ListView lv = (ListView) rootView.findViewById(R.id.listview_forecast);
-    lv.setAdapter(mForecastAdapter);
-    lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
+    mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+    mListView.setAdapter(mForecastAdapter);
+    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener()
     {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id)
@@ -130,9 +133,21 @@ public class ForecastFragment
           ((Callback) getActivity()).fragCallback_onItemSelected(
                   WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                           locationSetting, c.getLong(COL_WEATHER_DATE)));
+          mPosition = position;
         }
       }
     });
+    // If there's instance state, mine it for useful information.
+    // The end-goal here is that the user never knows that turning their device sideways
+    // does crazy lifecycle related things.  It should feel like some stuff stretched out,
+    // or magically appeared to take advantage of room, but data or place in the app was never
+    // actually *lost*.
+    if ( savedInstanceState != null && savedInstanceState.containsKey(SELECTED_POSITION_KEY) )
+    {
+      mPosition = savedInstanceState.getInt(SELECTED_POSITION_KEY);
+    }
+
+    mForecastAdapter.setShouldUseTodayLayout(mShouldUseTodayLayout);
 
     return rootView;
   }
@@ -142,6 +157,19 @@ public class ForecastFragment
   {
     getLoaderManager().initLoader(LOADER_ID_FORECAST, null, this);
     super.onActivityCreated(savedInstanceState);
+  }
+
+  // When device rotates, currently selected list item needs to be saved.
+  // When no item is selected, mPosition will be set to ListView.INVALID_POSITION
+  // so check for that before storing
+  @Override
+  public void onSaveInstanceState(Bundle outState)
+  {
+    if (mPosition != ListView.INVALID_POSITION)
+    {
+      outState.putInt(SELECTED_POSITION_KEY, mPosition);
+    }
+    super.onSaveInstanceState(outState);
   }
 
   // LoaderCallbacks Implementation
@@ -170,14 +198,27 @@ public class ForecastFragment
   }
 
   @Override
-  public void onLoadFinished(Loader<Cursor> sl, Cursor c)
+  public void onLoadFinished(Loader<Cursor> loader, Cursor c)
   {
     mForecastAdapter.swapCursor(c);
+    if (mPosition != ListView.INVALID_POSITION)
+    {
+      mListView.smoothScrollToPosition(mPosition);
+    }
   }
 
   @Override
-  public void onLoaderReset(Loader<Cursor> sl)
+  public void onLoaderReset(Loader<Cursor> loader)
   {
     mForecastAdapter.swapCursor(null);
+  }
+
+  public void setShouldUseTodayLayout(boolean value)
+  {
+    mShouldUseTodayLayout = value;
+    if (mForecastAdapter != null)
+    {
+      mForecastAdapter.setShouldUseTodayLayout(value);
+    }
   }
 }

@@ -46,6 +46,10 @@ public class MainActivity
     {
       mIsTwoPane = false;
     }
+
+    ForecastFragment ff = ((ForecastFragment)getSupportFragmentManager()
+                            .findFragmentById(R.id.fragment_forecast));
+    ff.setShouldUseTodayLayout(!mIsTwoPane);
   }
 
 
@@ -129,6 +133,11 @@ public class MainActivity
     {
       Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
     }
+  }
+
+  public boolean getIsTwoPane()
+  {
+    return mIsTwoPane;
   }
 
   @Override
