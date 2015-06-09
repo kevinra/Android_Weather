@@ -45,6 +45,7 @@ public class MainActivity
     else
     {
       mIsTwoPane = false;
+      getSupportActionBar().setElevation(0);
     }
 
     ForecastFragment ff = ((ForecastFragment)getSupportFragmentManager()
