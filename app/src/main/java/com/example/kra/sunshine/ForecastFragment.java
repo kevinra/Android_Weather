@@ -1,9 +1,6 @@
 package com.example.kra.sunshine;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,7 +20,7 @@ import android.widget.AdapterView;
 import android.util.Log;
 
 import com.example.kra.sunshine.data.WeatherContract;
-import com.example.kra.sunshine.service.SunshineService;
+import com.example.kra.sunshine.sync.SunshineSyncAdapter;
 
 // Encapsulates fetching the forecast and displaying it as
 // a {@link ListView} layout.
@@ -112,17 +109,7 @@ public class ForecastFragment
 
   public void updateWeather()
   {
-    Context ct = getActivity();
-    String location = Utility.getPreferredLocation(ct);
-    Intent alarmIntent = new Intent(ct, SunshineService.AlarmReceiver.class);
-    alarmIntent.putExtra(SunshineService.LOCATION_KEY, location);
-
-    // Wrap in a pending intent which only fires once.
-    PendingIntent pi = PendingIntent.getBroadcast(ct, 0, alarmIntent, PendingIntent.FLAG_ONE_SHOT);
-    AlarmManager am = (AlarmManager) ct.getSystemService(Context.ALARM_SERVICE);
-
-    // Set the AlarmManager to wake up the system
-    am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pi);
+    SunshineSyncAdapter.syncImmediately( getActivity() );
   }
 
   @Override

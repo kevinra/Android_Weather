@@ -110,9 +110,9 @@ public class ForecastAdapter extends CursorAdapter
     vh.dateView.setText(Utility.getFriendlyDayString(context, dateInMillis));
     vh.weatherDescView.setText(weatherDesc);
     vh.highTempView.setText(Utility
-            .formatTemperature(context, high, isMetric));
+            .formatTemperature(context, high));
     vh.lowTempView.setText(Utility
-            .formatTemperature(context, low, isMetric));
+            .formatTemperature(context, low));
   }
 
   public void setShouldUseTodayLayout(boolean value)

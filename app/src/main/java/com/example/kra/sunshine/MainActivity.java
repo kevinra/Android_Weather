@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.kra.sunshine.sync.SunshineSyncAdapter;
+
 
 public class MainActivity
         extends ActionBarActivity
@@ -51,6 +53,7 @@ public class MainActivity
     ForecastFragment ff = ((ForecastFragment)getSupportFragmentManager()
                             .findFragmentById(R.id.fragment_forecast));
     ff.setShouldUseTodayLayout(!mIsTwoPane);
+    SunshineSyncAdapter.initializeSyncAdapter(this);
   }
 
 

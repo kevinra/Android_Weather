@@ -11,3 +11,4 @@ Features added to far:
 * Cursor Loader
 * Updated UI
 * Multi-pane support on bigger screen
+* Notification support + on/off preference

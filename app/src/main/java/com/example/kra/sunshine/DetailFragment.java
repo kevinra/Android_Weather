@@ -185,8 +185,8 @@ public class DetailFragment
       String friendlyDateText = Utility.getDayName(context, date);
       String dateText = Utility.getFormattedMonthDay(context, date);
       boolean isMetric = Utility.isMetric(context);
-      String highTempStr = Utility.formatTemperature(context, high, isMetric);
-      String lowTempStr = Utility.formatTemperature(context, low, isMetric);
+      String highTempStr = Utility.formatTemperature(context, high);
+      String lowTempStr = Utility.formatTemperature(context, low);
 
       mIconView.setImageResource(Utility
               .getArtResourceForWeatherCondition(weatherId));
