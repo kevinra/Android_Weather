@@ -12,3 +12,11 @@ Features added to far:
 * Updated UI
 * Multi-pane support on bigger screen
 * Notification support + on/off preference
+
+Screenshots:
+
+![](https://cloud.githubusercontent.com/assets/6539629/9175278/a48be58a-3f39-11e5-9ab2-efe11a38823d.png)
+![](https://cloud.githubusercontent.com/assets/6539629/9175278/a48be58a-3f39-11e5-9ab2-efe11a38823d.png)
+![](https://cloud.githubusercontent.com/assets/6539629/9175278/a48be58a-3f39-11e5-9ab2-efe11a38823d.png)
+![](https://cloud.githubusercontent.com/assets/6539629/9175278/a48be58a-3f39-11e5-9ab2-efe11a38823d.png)
+![](https://cloud.githubusercontent.com/assets/6539629/9175278/a48be58a-3f39-11e5-9ab2-efe11a38823d.png)
